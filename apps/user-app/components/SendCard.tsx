@@ -5,12 +5,14 @@ import { Center } from "@repo/ui/center";
 import { TextInput } from "@repo/ui/textinput";
 import { useState } from "react";
 import { p2pTransfer } from "../app/lib/actions/p2pTransfer";
+import { useRouter } from 'next/navigation'
 
 export function SendCard() {
     const [number, setNumber] = useState("");
     const [amount, setAmount] = useState("");
+    const router = useRouter();
 
-    return <div className="h-[90vh]">
+    return <div className="">
         <Center>
             <Card title="Send">
                 <div className="min-w-72 pt-2">
@@ -22,7 +24,16 @@ export function SendCard() {
                     }} />
                     <div className="pt-4 flex justify-center">
                         <Button onClick={async () => {
-                            await p2pTransfer(number, Number(amount) * 100)
+                            try {
+                                const res = await p2pTransfer(number, Number(amount) * 100)
+                                if(res){
+                                    alert(res.message);
+                                } else {
+                                    router.push('/transfer');
+                                }
+                            } catch(e) {
+                                alert("Insufficient fund")
+                            }
                         }}>Send</Button>
                     </div>
                 </div>
