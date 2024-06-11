@@ -1,5 +1,5 @@
 
 export default function () {
     return (
-        "Hi there"
+        "Helo Everyone"
     )}
