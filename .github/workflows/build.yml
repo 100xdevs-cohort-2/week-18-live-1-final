@@ -1,0 +1,24 @@
+name : Build on PR
+on :
+ pull_request : 
+  branches :
+    -"**"
+
+jobs :
+  build_PR:
+    name : Building PR
+    runs : ubuntu-latest
+    steps : 
+      - name : Clone repo
+        uses : actions/checkouts@v3
+      - name : Use Node js
+        uses : actions/setup-node@v3
+        with :
+          node-versions : "20"
+      - name : Install Dependecies
+        runs : npm install
+      - name : Generate Prisma client
+        runs : cd packages/db && npx prisma generate && cd ../..
+      - name : Build
+        runs : npm run build
+
